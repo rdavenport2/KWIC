@@ -70,39 +70,45 @@ public class AlphabetizerModule extends Module{
             CharacterComparator cc = new CharacterComparator();
             
             //actual positions in line storage
-            int startpos1 = c1.getLineBeginningIndex() + c1.getWordOffset();
-            int startpos2 = c2.getLineBeginningIndex() + c2.getWordOffset();
+            //int startpos1 = c1.getLineBeginningIndex() + c1.getWordOffset();
+            //int startpos2 = c2.getLineBeginningIndex() + c2.getWordOffset();
             
             //index - position in virtual line
             int index1 = 0;
             int index2 = 0;
-          
-            //this checks for the same letters at the begining of the line
-            while(index1 < (shortestLength + index1) && cc.compare(vault.getChar(index1), vault.getChar(index2)) == 0){
-                //need to wrap to the begining of the line
-                //System.out.println("Char are the same");
+            
+            //get the correct index number in line storage to compare
+            int compare_pos1 = getPosition(c1, index1);
+            int compare_pos2 = getPosition(c2, index2);
+            
+            //compare the fist two letters:
+            int result = cc.compare(vault.getChar(compare_pos1), vault.getChar(compare_pos2));
+            System.out.println("result: " + result);
+            
+            //if the letters are the same move to the next letters
+            //don't go past the shortest length
+            while(result == 0 && index1 < shortestLength){
                 index1 ++;
                 index2 ++;
-                index1 = wrap(index1, c1);
-                index2 = wrap(index2, c2);
+                result = cc.compare(vault.getChar(compare_pos1 + index1), vault.getChar(compare_pos2));
             }
-            
-            //these char are different
-            // < 0 
-            result = cc.compare(vault.getChar(index1), vault.getChar(index2));
-            //System.out.println("result: " + result);
             
         return result;
      
         }//end compare
         
-        private int wrap(int index, LineIndex l){
-            if(index > l.getLineBeginningIndex()){
-                if(Character.toString(vault.getChar(index)).equals("\n")){
-                    return index + l.getLineLength() -1;
-                }
-            }
-            return index;
+        private int getPosition(LineIndex l, int index){
+            
+            int lineBegin = l.getLineBeginningIndex();
+            int virtualLineBegin = lineBegin + l.getWordOffset();
+            int current = (index + virtualLineBegin) % l.getLineLength();
+            
+           /* if(virtualLineBegin != lineBegin){      
+                //need to wrap
+                //don't forget the \n is counted in the line as a space
+                current = current % l.getLineLength();
+            }*/
+            return current; 
         }
 
     }//end Comparator
