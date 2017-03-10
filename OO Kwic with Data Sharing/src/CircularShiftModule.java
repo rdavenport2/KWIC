@@ -16,7 +16,7 @@ public class CircularShiftModule extends Module{
             //System.out.println(li.toString());
             int lastIndex = li.getLineLength()+li.getLineBeginningIndex() - 2;
             //System.out.println("lastIndex: " + lastIndex);
-            for(int index = li.getLineBeginningIndex(); index < lastIndex; index++){
+            for(int index = li.getLineBeginningIndex(); index <= lastIndex; index++){
                 //System.out.println("index: " + index);
                 //first word
                 if(index == li.getLineBeginningIndex()){

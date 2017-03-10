@@ -11,49 +11,55 @@ public class AlphabetizerModule extends Module{
     void sort() {
         System.out.println("\nAlphabetizerModule.sort");
         
-        NewComparator newSort = new NewComparator();
+        LineComparator lineSort = new LineComparator();
         
         //compare each char in a line from previous module
-        for (int j = 0; j < previousModIndexes.size(); j++) {
+        for (int j = 0; j < previousModIndexes.size()-1; j++) {
             /* find the min element in the unsorted a[j .. n-1] */
-            int place = j + 1;
+            //int place = j + 1;
             /* assume the min is the first element */
             LineIndex min = previousModIndexes.get(j);
             /* test against elements after j to find the smallest */
             for (int i = j+1; i < previousModIndexes.size(); i++) {
                 /* if this element is less, then it is the new minimum */
                 LineIndex current = previousModIndexes.get(i);
-                int result = newSort.compare(min, current);
-                    System.out.println("result: " + result);
-                if (current.getPlaceInSort() == 0 && newSort.compare(min, current) > 0  ) {                    
+                int result = lineSort.compare(min, current);
+                System.out.println("result: " + result);
+                if (result > 0  ) {                    
                     /* found new minimum; remember its index */
                     min = current;
                     System.out.println("min: " + min.getLineBeginningIndex());
                 }
             }
-            
-            int a = previousModIndexes.indexOf(min);
-            newIndexes.add(previousModIndexes.get(a));
-            newIndexes.get(a).setPlaceInSort(place);
-            
+            if(min != previousModIndexes.get(j)){
+                //swap
+                int m = previousModIndexes.indexOf(min);
+                swap(j, m);
+            }    
         }
         
         newIndexes = previousModIndexes;
         displayIndexes();
     }//end sort
     
-    private class NewComparator implements Comparator<LineIndex>{
+    private void swap(int j, int m){
+        
+        LineIndex tempj = previousModIndexes.get(j);
+        LineIndex tempm = previousModIndexes.get(m);
+        previousModIndexes.remove(j);
+        previousModIndexes.remove(m-1);
+        previousModIndexes.add(j, tempm);
+        previousModIndexes.add(m, tempj);   
+    }
+    
+    private class LineComparator implements Comparator<LineIndex>{
         
         int result;
         
         @Override
         public int compare(LineIndex c1, LineIndex c2) {
             //System.out.println("\nAlphabetizerModule.NewComparator");
-            CharacterComparator cc = new CharacterComparator();
-            int index1 = c1.getLineBeginningIndex() + c1.getWordOffset();
-            int index2 = c2.getLineBeginningIndex() + c2.getWordOffset();
-            //System.out.println("index 1: " + index1);
-            //System.out.println("index 2: " + index2);
+            //find the shortest line
             int shortestLength;
             if(c1.getLineLength() < c2.getLineLength()){
                 shortestLength = c1.getLineLength();
@@ -61,14 +67,24 @@ public class AlphabetizerModule extends Module{
                 shortestLength = c2.getLineLength();
             }
             
+            CharacterComparator cc = new CharacterComparator();
+            
+            //actual positions in line storage
+            int startpos1 = c1.getLineBeginningIndex() + c1.getWordOffset();
+            int startpos2 = c2.getLineBeginningIndex() + c2.getWordOffset();
+            
+            //index - position in virtual line
+            int index1 = 0;
+            int index2 = 0;
+          
             //this checks for the same letters at the begining of the line
-            while(index1 < shortestLength && cc.compare(vault.getChar(index1), vault.getChar(index2)) == 0){
+            while(index1 < (shortestLength + index1) && cc.compare(vault.getChar(index1), vault.getChar(index2)) == 0){
                 //need to wrap to the begining of the line
                 //System.out.println("Char are the same");
                 index1 ++;
                 index2 ++;
-                index1 = wrap(index1, c1.getLineLength());
-                index2 = wrap(index2, c2.getLineLength());
+                index1 = wrap(index1, c1);
+                index2 = wrap(index2, c2);
             }
             
             //these char are different
@@ -80,12 +96,13 @@ public class AlphabetizerModule extends Module{
      
         }//end compare
         
-        int wrap(int index, int length){
-            if(Character.toString(vault.getChar(index)).equals("\n")){
-                return index + length -1;
-            }else{
-                return index;
+        private int wrap(int index, LineIndex l){
+            if(index > l.getLineBeginningIndex()){
+                if(Character.toString(vault.getChar(index)).equals("\n")){
+                    return index + l.getLineLength() -1;
+                }
             }
+            return index;
         }
 
     }//end Comparator
@@ -108,7 +125,7 @@ public class AlphabetizerModule extends Module{
             } /*different case, different letter - compare as usual ignoring case*/
             else if (!Character.toString(c1).toUpperCase().equals(Character.toString(c2).toUpperCase())) {
 
-                result = Character.toString(c1).compareTo(Character.toString(c2));
+                result = Character.toString(c1).compareToIgnoreCase(Character.toString(c2));
 
             } //different case, same letter - reverse the compare result
             else {
