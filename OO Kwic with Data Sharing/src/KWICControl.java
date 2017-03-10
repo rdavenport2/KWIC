@@ -96,8 +96,8 @@ public class KWICControl {
         alphabetizer.sort();
         
         //create output module and ouput results
-        //OutputModule output = new OutputModule(vault);
-        //output.show();
+        OutputModule output = new OutputModule(vault, alphabetizer.getNewIndexes());
+        output.show();
         
     }//end indexingSystem
     
