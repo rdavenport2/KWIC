@@ -69,28 +69,26 @@ public class AlphabetizerModule extends Module{
             
             CharacterComparator cc = new CharacterComparator();
             
-            //actual positions in line storage
-            //int startpos1 = c1.getLineBeginningIndex() + c1.getWordOffset();
-            //int startpos2 = c2.getLineBeginningIndex() + c2.getWordOffset();
-            
             //index - position in virtual line
             int index1 = 0;
             int index2 = 0;
             
             //get the correct index number in line storage to compare
-            int compare_pos1 = getPosition(c1, index1);
-            int compare_pos2 = getPosition(c2, index2);
+            //int compare_pos1 = getPosition(c1, index1);
+            //int compare_pos2 = getPosition(c2, index2);
             
             //compare the fist two letters:
-            int result = cc.compare(vault.getChar(compare_pos1), vault.getChar(compare_pos2));
-            System.out.println("result: " + result);
+            int result = cc.compare(vault.getChar(getPosition(c1, index1)), vault.getChar(getPosition(c2, index2)));
+            //System.out.println("result: " + result);
             
             //if the letters are the same move to the next letters
             //don't go past the shortest length
             while(result == 0 && index1 < shortestLength){
                 index1 ++;
                 index2 ++;
-                result = cc.compare(vault.getChar(compare_pos1 + index1), vault.getChar(compare_pos2));
+                //compare_pos1 = getPosition(c1, index1);
+                //compare_pos2 = getPosition(c2, index2);
+                result = cc.compare(vault.getChar(getPosition(c1, index1)), vault.getChar(getPosition(c2, index2)));
             }
             
         return result;
@@ -101,7 +99,7 @@ public class AlphabetizerModule extends Module{
             
             int lineBegin = l.getLineBeginningIndex();
             int virtualLineBegin = lineBegin + l.getWordOffset();
-            int current = (index + virtualLineBegin) % l.getLineLength();
+            int current = (index % l.getLineLength()) + virtualLineBegin;
             
            /* if(virtualLineBegin != lineBegin){      
                 //need to wrap
