@@ -39,7 +39,7 @@ public class KWICControl {
         centerLayout.setLayout(new BoxLayout(centerLayout, BoxLayout.Y_AXIS));
 
         inputArea = new JTextArea();
-        inputArea.setText("bb\nb");
+        inputArea.setText("the cat in the hat");
         inputArea.setBorder(BorderFactory.createTitledBorder("Input"));
         JScrollPane inputScroll = new JScrollPane(inputArea);
         centerLayout.add(inputScroll);

@@ -13,22 +13,24 @@ public class OutputModule extends Module{
         //if the line wraps, change the \n to a space and change space to \n at the end
         for(int i = 0; i < previousModIndexes.size(); i++){
             for(int j = 0; j < previousModIndexes.get(i).getLineLength(); j++){
-                System.out.print(vault.getChar(getPosition(previousModIndexes.get(i), j)));
+                int lineStoragePosition = getPosition(previousModIndexes.get(i), j);
+                String nextChar = Character.toString(vault.getChar(lineStoragePosition));
+                if(nextChar.equals("\n") && previousModIndexes.get(i).getWordOffset() != 0){
+                    //this is not the end of the line
+                    nextChar = " ";
+                }
+                if(j ==  previousModIndexes.get(i).getLineLength() - 1){
+                    //this is the end of the line
+                    nextChar = "\n";
+                }
+                System.out.print(nextChar);
             }
         }
     }//end show
     
     private int getPosition(LineIndex l, int index){
             
-            int lineBegin = l.getLineBeginningIndex();
-            int virtualLineBegin = lineBegin + l.getWordOffset();
-            int current = (index % l.getLineLength()) + virtualLineBegin;
-            
-           /* if(virtualLineBegin != lineBegin){      
-                //need to wrap
-                //don't forget the \n is counted in the line as a space
-                current = current % l.getLineLength();
-            }*/
+            int current = (index + l.getWordOffset()) % l.getLineLength();         
             return current; 
         }
     

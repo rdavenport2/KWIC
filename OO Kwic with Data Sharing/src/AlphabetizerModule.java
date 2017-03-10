@@ -97,15 +97,7 @@ public class AlphabetizerModule extends Module{
         
         private int getPosition(LineIndex l, int index){
             
-            int lineBegin = l.getLineBeginningIndex();
-            int virtualLineBegin = lineBegin + l.getWordOffset();
-            int current = (index % l.getLineLength()) + virtualLineBegin;
-            
-           /* if(virtualLineBegin != lineBegin){      
-                //need to wrap
-                //don't forget the \n is counted in the line as a space
-                current = current % l.getLineLength();
-            }*/
+            int current = (index + l.getWordOffset()) % l.getLineLength();
             return current; 
         }
 
