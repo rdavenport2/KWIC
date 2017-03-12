@@ -15,8 +15,8 @@ public class OutputModule extends Module{
         //caluclate how many to output
         int maxIteration = 0;
         for(int j = 0; j < vault.size(); j++){
-            if(!vault.get(j).isRemoved()){
-                maxIteration ++;
+            if(vault.get(j).getPlaceInSort() > maxIteration){
+                maxIteration = vault.get(j).getPlaceInSort();
             }
         }
         int place = 1;
@@ -25,7 +25,7 @@ public class OutputModule extends Module{
             //if the line wraps, change the \n to a space and change space to \n at the end
             for(int i = 0; i < vault.size(); i++){
                 //find the first line to output
-                if(vault.get(i).getPlaceInSort() == place){
+                if(vault.get(i).getPlaceInSort() == place  && !vault.get(i).isRemoved()){
                     for(int j = 0; j < vault.get(i).getLineLength(); j++){
                         int lineStoragePosition = getPosition(vault.get(i), j);
                         String nextChar = Character.toString(vault.getChar(lineStoragePosition));
