@@ -3,20 +3,9 @@ import java.util.ArrayList;
 import kwic.KWICControl;
 
 public class OutputModule extends Module{
-    
-    private static OutputModule instance;
-
-    /*public OutputModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
-        super(vault, previousIndexes);
-    }*/
-    
     public OutputModule(IStorage vault) {
         super(vault);
-        instance = OutputModule.this;
-       // super.previousModIndexes = kwic.AlphabetizerModule.getInstance().getNewIndexes();
     }
-    
-    public static OutputModule getInstance(){return instance;}
 
     void show() {
         System.out.println("\nin OutputModule.show");

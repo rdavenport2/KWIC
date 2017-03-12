@@ -2,20 +2,10 @@ package kwic;
 import java.util.ArrayList;
 
 public class InputModule extends Module{
-    
-    private static InputModule instance;
-
-    /*public InputModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
-        super(vault, previousIndexes);
-        instance = InputModule.this;
-    }*/
-    
+   
     public InputModule(IStorage vault) {
         super(vault);
-        instance = InputModule.this;
     }
-    
-    public static InputModule getInstance(){return instance;}
     
     public void setData(String text){
         System.out.println("\nin InputModule.setData");
@@ -35,7 +25,6 @@ public class InputModule extends Module{
                 li.setLineLength(vault.lengthOfLine(i));
                 li.setPlaceInSort(0);
                 li.setWordOffset(0);
-                //newIndexes.add(li);
                 vault.add(li);
             }
             if(Character.toString(text.charAt(i)).equals("\n")){
@@ -44,11 +33,9 @@ public class InputModule extends Module{
                 li.setLineLength(vault.lengthOfLine(i + 1));
                 li.setPlaceInSort(0);
                 li.setWordOffset(0);
-                //newIndexes.add(li);
                 vault.add(li);
             } 
         }
-        //displayIndexes();
         vault.displayIndexes();
     }
 }//end class

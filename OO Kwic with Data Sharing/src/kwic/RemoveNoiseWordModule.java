@@ -5,21 +5,9 @@ import java.util.Arrays;
 public class RemoveNoiseWordModule extends Module{
     
     ArrayList<String> noiseWords;
-    private static RemoveNoiseWordModule instance;
-
-    /*public RemoveNoiseWordModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
-        super(vault, previousIndexes);
-        noiseWords = new ArrayList<>(Arrays.asList(new String[]{
-            "a", "an", "the", "and", "or", "nor", "yet", "for", "but",
-            "am", "is", "are", "was", "were", "be", "being", "been",
-            "of", "to", "in", "out", "by", "as", "at", "off", "on"
-        }));
-    }*/
     
     public RemoveNoiseWordModule(IStorage vault) {
         super(vault);
-        instance = RemoveNoiseWordModule.this;
-        //super.previousModIndexes = kwic.CircularShiftModule.getInstance().getNewIndexes();
         
         noiseWords = new ArrayList<>(Arrays.asList(new String[]{
             "a", "an", "the", "and", "or", "nor", "yet", "for", "but",
@@ -27,8 +15,6 @@ public class RemoveNoiseWordModule extends Module{
             "of", "to", "in", "out", "by", "as", "at", "off", "on"
         }));
     }
-    
-    public static RemoveNoiseWordModule getInstance(){return instance;}
  
     void removeLine() {
         System.out.println("\nin RemoveNoiseWordModule.removeLine");
@@ -37,7 +23,6 @@ public class RemoveNoiseWordModule extends Module{
         */
         for(int i = 0; i < vault.size(); i++){
             String firstWord = "";
-            //LineIndex l = vault.get(i);
             int index = vault.get(i).getLineBeginningIndex() + vault.get(i).getWordOffset();
             while(index < vault.length() && vault.getChar(index) != 32  && 
                     !Character.toString(vault.getChar(index)).equals("\n")){
@@ -53,9 +38,6 @@ public class RemoveNoiseWordModule extends Module{
                     break;
                 } 
             }
-            /*if(!l.isRemoved()){
-                newIndexes.add(l);
-            }*/
         }
         vault.displayIndexes();
     } 

@@ -94,22 +94,18 @@ public class KWICControl {
         //testLineStorage(vault);
         
         //create ciurcular shift module and begin shift
-        //CircularShiftModule circularShift = new CircularShiftModule(vault, input.getNewIndexes());
         CircularShiftModule circularShift = new CircularShiftModule(vault);
         circularShift.shift();
         
         //create noise word line removal module and begin line removal
-        //RemoveNoiseWordModule removeNoiseWord = new RemoveNoiseWordModule(vault, circularShift.getNewIndexes());
         RemoveNoiseWordModule removeNoiseWord = new RemoveNoiseWordModule(vault);
         removeNoiseWord.removeLine();
         
         //create alphabetizer module and begin sort
-        //AlphabetizerModule alphabetizer = new AlphabetizerModule(vault, removeNoiseWord.getNewIndexes());
         AlphabetizerModule alphabetizer = new AlphabetizerModule(vault);
         alphabetizer.sort();
         
         //create output module and ouput results
-        //OutputModule output = new OutputModule(vault, alphabetizer.getNewIndexes());
         OutputModule output = new OutputModule(vault);
         output.show();
         
@@ -138,7 +134,6 @@ public class KWICControl {
         for (int i = 0; i < inputArea.getText().trim().length(); i++){
             System.out.print(vault.getChar(i));
         }
-
     }
     
 }//end class

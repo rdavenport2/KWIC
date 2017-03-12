@@ -3,22 +3,10 @@ import java.util.ArrayList;
 
 public class CircularShiftModule extends Module{
     
-    private static CircularShiftModule instance;
-
-    /*public CircularShiftModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
-        super(vault, previousIndexes);
-        instance = CircularShiftModule.this;
-        previousModIndexes = kwic.InputModule.getInstance().getNewIndexes();
-    }*/
-    
     public CircularShiftModule(IStorage vault) {
         super(vault);
-        instance = CircularShiftModule.this;
-        //super.previousModIndexes = kwic.InputModule.getInstance().getNewIndexes();
-    }
-    
-    public static CircularShiftModule getInstance(){return instance;}
-
+        }
+   
     //this shift creates shifted lines from index list
     public void shift(){
         System.out.println("\nin CircularShiftModule.shift");
@@ -32,15 +20,7 @@ public class CircularShiftModule extends Module{
             for(int index = vault.get(i).getLineBeginningIndex(); index <= lastIndex; index++){
                 System.out.println("index: " + index);
                 //first word
-                /*if(index == li.getLineBeginningIndex()){
-                    System.out.println("in index == begin index");
-                    LineIndex next = new LineIndex();
-                    next.setLineBeginningIndex(li.getLineBeginningIndex());
-                    next.setRemoved(false);
-                    next.setWordOffset(0);
-                    next.setLineLength(li.getLineLength());
-                    vault.add(next);
-                }else*/ if(vault.getChar(index) == 32){
+                if(vault.getChar(index) == 32){
                     System.out.println("in index == 32");
                     LineIndex next = new LineIndex();
                     next.setLineBeginningIndex(vault.get(i).getLineBeginningIndex());
