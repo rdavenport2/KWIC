@@ -12,7 +12,7 @@ public class AlphabetizerModule extends Module{
     public AlphabetizerModule(IStorage vault) {
         super(vault);
         instance = AlphabetizerModule.this;
-        super.previousModIndexes = kwic.RemoveNoiseWordModule.getInstance().getNewIndexes();
+        //super.previousModIndexes = kwic.RemoveNoiseWordModule.getInstance().getNewIndexes();
     }
     
     public static AlphabetizerModule getInstance(){return instance;}
@@ -23,43 +23,79 @@ public class AlphabetizerModule extends Module{
         LineComparator lineSort = new LineComparator();
         
         //compare each char in a line from previous module
-        for (int j = 0; j < previousModIndexes.size()-1; j++) {
+        /*for (int j = 0; j < vault.size()-1; j++) {
             /* find the min element in the unsorted a[j .. n-1] */
             //int place = j + 1;
             /* assume the min is the first element */
-            LineIndex min = previousModIndexes.get(j);
+            //LineIndex min = vault.get(j);
             /* test against elements after j to find the smallest */
-            for (int i = j+1; i < previousModIndexes.size(); i++) {
+            //for (int i = j+1; i < vault.size(); i++) {
                 /* if this element is less, then it is the new minimum */
-                LineIndex current = previousModIndexes.get(i);
-                int result = lineSort.compare(min, current);
+                //LineIndex current = vault.get(i);
+                //int result = lineSort.compare(min, current);
                 //System.out.println("result: " + result);
-                if (result > 0  ) {                    
+                //if (result > 0  ) {                    
                     /* found new minimum; remember its index */
-                    min = current;
+                   //min = current;
                     //System.out.println("min: " + min.getLineBeginningIndex());
+                //}
+            //}
+            
+           /* if(min != vault.get(j)){
+                //swap
+                int m = vault.indexOf(min);
+                //swap(j, m);
+                vault.get(m).setPlaceInSort(place);
+            }else{
+                vault.get(j).setPlaceInSort(place);
+            } */
+           
+        int iteration = 0;
+        int maxIteration = 0;
+        int place = 1;
+        for(int j = 0; j < vault.size(); j++){
+            if(!vault.get(j).isRemoved()){
+                maxIteration ++;
+            }
+        }
+        while (iteration < maxIteration){
+            int min = 0;
+            
+            //get the first index number that has not been placed yet and assume it is the min
+            while (min < vault.size() && (vault.get(min).isRemoved() || vault.get(min).getPlaceInSort() != 0)){
+                min ++;             
+            }
+            
+            //compare the min with all the lines, if it is not the min, assign new value to min
+            for(int i = 0; i < vault.size(); i++){
+                if(min < vault.size() && vault.get(i).getPlaceInSort() == 0 && !vault.get(i).isRemoved()){
+                    
+                    int result = lineSort.compare(vault.get(min), vault.get(i));
+                    if(result > 0){
+                        min = i;
+                    }
                 }
             }
-            if(min != previousModIndexes.get(j)){
-                //swap
-                int m = previousModIndexes.indexOf(min);
-                swap(j, m);
-            }    
-        }
+            
+            //min should be the mininum; give it the next place in line
+            vault.get(min).setPlaceInSort(place);
+            place ++;
+            iteration ++;
+        }//end outer while
         
-        newIndexes = previousModIndexes;
-        displayIndexes();
+        //newIndexes = previousModIndexes;
+        vault.displayIndexes();
     }//end sort
     
-    private void swap(int j, int m){
-        
-        LineIndex tempj = previousModIndexes.get(j);
-        LineIndex tempm = previousModIndexes.get(m);
-        previousModIndexes.remove(j);
-        previousModIndexes.remove(m-1);
-        previousModIndexes.add(j, tempm);
-        previousModIndexes.add(m, tempj);   
-    }
+    /*private void swap(int j, int m){
+     
+        LineIndex tempj = vault.get(j);
+        LineIndex tempm = vault.get(m);
+        vault.remove(j);
+        vault.remove(m-1);
+        vault.add(j, tempm);
+        vault.add(m, tempj);   
+    }*/
     
     private class LineComparator implements Comparator<LineIndex>{
         

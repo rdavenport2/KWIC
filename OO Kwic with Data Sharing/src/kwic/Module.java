@@ -3,16 +3,16 @@ import java.util.ArrayList;
 
 public class Module {
     protected IStorage vault;
-    protected ArrayList<LineIndex> previousModIndexes;
-    protected ArrayList<LineIndex> newIndexes;
+    //protected ArrayList<LineIndex> previousModIndexes;
+    //protected ArrayList<LineIndex> newIndexes;
     
     public Module(IStorage vault){
     //public Module(IStorage vault, ArrayList<LineIndex> previousIndexes){
         this.vault = vault;
-        newIndexes = new ArrayList<>();
+        //newIndexes = new ArrayList<>();
     }
 
-    public ArrayList<LineIndex> getNewIndexes() {
+    /*public ArrayList<LineIndex> getNewIndexes() {
         return newIndexes;
     }
 
@@ -40,5 +40,5 @@ public class Module {
         for(LineIndex i: newIndexes){
             System.out.println(i.toString());
         }
-    }
+    }*/
 }//end class

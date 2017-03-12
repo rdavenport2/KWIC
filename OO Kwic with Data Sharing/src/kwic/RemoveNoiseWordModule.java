@@ -19,7 +19,7 @@ public class RemoveNoiseWordModule extends Module{
     public RemoveNoiseWordModule(IStorage vault) {
         super(vault);
         instance = RemoveNoiseWordModule.this;
-        super.previousModIndexes = kwic.CircularShiftModule.getInstance().getNewIndexes();
+        //super.previousModIndexes = kwic.CircularShiftModule.getInstance().getNewIndexes();
         
         noiseWords = new ArrayList<>(Arrays.asList(new String[]{
             "a", "an", "the", "and", "or", "nor", "yet", "for", "but",
@@ -35,10 +35,10 @@ public class RemoveNoiseWordModule extends Module{
         /*
         Examine each begining word from shiftIndexes to eliminate
         */
-        for(int i = 0; i < previousModIndexes.size(); i++){
+        for(int i = 0; i < vault.size(); i++){
             String firstWord = "";
-            LineIndex l = previousModIndexes.get(i);
-            int index = l.getLineBeginningIndex() + l.getWordOffset();
+            //LineIndex l = vault.get(i);
+            int index = vault.get(i).getLineBeginningIndex() + vault.get(i).getWordOffset();
             while(index < vault.length() && vault.getChar(index) != 32  && 
                     !Character.toString(vault.getChar(index)).equals("\n")){
                 firstWord += vault.getChar(index);
@@ -49,14 +49,14 @@ public class RemoveNoiseWordModule extends Module{
             //if the 1st word is not a noise word, put the line in the pipe
                 if(firstWord.equalsIgnoreCase(noiseWord)){
                    // System.out.println(firstWord + " is a noise word.");
-                    l.setRemoved(true);
+                    vault.get(i).setRemoved(true);
                     break;
                 } 
             }
-            if(!l.isRemoved()){
+            /*if(!l.isRemoved()){
                 newIndexes.add(l);
-            }
+            }*/
         }
-        displayIndexes();
-    }    
+        vault.displayIndexes();
+    } 
 }//end class

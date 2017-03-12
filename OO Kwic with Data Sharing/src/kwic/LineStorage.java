@@ -1,10 +1,21 @@
 package kwic;
+
+import java.util.ArrayList;
+
 public class LineStorage implements IStorage{
     
     String text;
+    ArrayList<LineIndex> indexes;
 
     public LineStorage() {
+        indexes = new ArrayList<>();
     }
+    
+    @Override
+    public LineIndex get(int i){return indexes.get(i);}
+    
+    @Override
+    public void add(LineIndex e){indexes.add(e);}
 
     @Override//good
     public char getChar(int index) {
@@ -65,5 +76,19 @@ public class LineStorage implements IStorage{
         //System.out.println("in LineStorage.length");
         return text.length();
     }
+    
+    @Override
+    public void displayIndexes(){
+        for(LineIndex i: indexes){
+            System.out.println(i.toString());
+        }
   
-}
+    }
+    
+    @Override
+    public int size(){return indexes.size();}
+    
+    @Override
+    public int indexOf(LineIndex i){return indexes.indexOf(i);}
+    
+}//end class

@@ -27,22 +27,28 @@ public class InputModule extends Module{
     
     private void compileIndexes(String text){
         //compiles the begining index of each line
-        ArrayList<LineIndex> indexes = new ArrayList<>();
         for(int i = 0; i < text.length(); i++){
             
             if(i == 0){
                 LineIndex li = new LineIndex();
                 li.setLineBeginningIndex(i);
                 li.setLineLength(vault.lengthOfLine(i));
-                newIndexes.add(li);
+                li.setPlaceInSort(0);
+                li.setWordOffset(0);
+                //newIndexes.add(li);
+                vault.add(li);
             }
             if(Character.toString(text.charAt(i)).equals("\n")){
                 LineIndex li = new LineIndex();
                 li.setLineBeginningIndex(i + 1);
                 li.setLineLength(vault.lengthOfLine(i + 1));
-                newIndexes.add(li);
+                li.setPlaceInSort(0);
+                li.setWordOffset(0);
+                //newIndexes.add(li);
+                vault.add(li);
             } 
         }
-        displayIndexes();
+        //displayIndexes();
+        vault.displayIndexes();
     }
 }//end class
