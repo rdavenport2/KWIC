@@ -1,3 +1,4 @@
+package kwic;
 public class LineStorage implements IStorage{
     
     String text;

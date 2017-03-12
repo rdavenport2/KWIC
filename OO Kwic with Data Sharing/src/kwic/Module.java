@@ -1,4 +1,4 @@
-
+package kwic;
 import java.util.ArrayList;
 
 public class Module {
@@ -6,9 +6,9 @@ public class Module {
     protected ArrayList<LineIndex> previousModIndexes;
     protected ArrayList<LineIndex> newIndexes;
     
-    public Module(IStorage vault, ArrayList<LineIndex> previousIndexes){
+    public Module(IStorage vault){
+    //public Module(IStorage vault, ArrayList<LineIndex> previousIndexes){
         this.vault = vault;
-        this.previousModIndexes = previousIndexes;
         newIndexes = new ArrayList<>();
     }
 

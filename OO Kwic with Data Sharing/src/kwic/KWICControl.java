@@ -1,9 +1,10 @@
-
+package kwic;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,11 +16,13 @@ import javax.swing.JTextArea;
 public class KWICControl {
 
     //declare variables
-    private JTextArea outputArea;
+    JTextArea outputArea;
     private JTextArea inputArea;
     private final JButton startButton;
+    private static KWICControl control;
     
     public KWICControl(){
+        control = KWICControl.this;
     JFrame frame = new JFrame("KWIC Indexing System");
         // Add a window listner for close button
         frame.addWindowListener(new WindowAdapter() {
@@ -63,14 +66,21 @@ public class KWICControl {
     private class StartListener implements ActionListener{
 
         @Override
-        public void actionPerformed(ActionEvent e) {            
+        public void actionPerformed(ActionEvent e) { 
+            long lStartTime = System.nanoTime();
             indexingSystem(inputArea.getText());
-        }//end actionPerformed        
+            long lEndTime = System.nanoTime();
+            long output = lEndTime - lStartTime;//in milliseconds
+            outputArea.setText(outputArea.getText() + 
+                    "\nElapsed time in milliseconds: " + output);
+}//end actionPerformed        
     }//end listener
     
     public static void main(String[] args) {
         KWICControl app = new KWICControl();
     }//end main
+    
+    public static KWICControl getInstance(){return control;}
     
     private void indexingSystem(String text){
         
@@ -78,25 +88,29 @@ public class KWICControl {
         IStorage vault = new LineStorage();
         
         //create input module and input text
-        InputModule input = new InputModule(vault, null);
+        InputModule input = new InputModule(vault);
         input.setData(text);
         
         //testLineStorage(vault);
         
         //create ciurcular shift module and begin shift
-        CircularShiftModule circularShift = new CircularShiftModule(vault, input.getNewIndexes());
+        //CircularShiftModule circularShift = new CircularShiftModule(vault, input.getNewIndexes());
+        CircularShiftModule circularShift = new CircularShiftModule(vault);
         circularShift.shift();
         
         //create noise word line removal module and begin line removal
-        RemoveNoiseWordModule removeNoiseWord = new RemoveNoiseWordModule(vault, circularShift.getNewIndexes());
+        //RemoveNoiseWordModule removeNoiseWord = new RemoveNoiseWordModule(vault, circularShift.getNewIndexes());
+        RemoveNoiseWordModule removeNoiseWord = new RemoveNoiseWordModule(vault);
         removeNoiseWord.removeLine();
         
         //create alphabetizer module and begin sort
-        AlphabetizerModule alphabetizer = new AlphabetizerModule(vault, removeNoiseWord.getNewIndexes());
+        //AlphabetizerModule alphabetizer = new AlphabetizerModule(vault, removeNoiseWord.getNewIndexes());
+        AlphabetizerModule alphabetizer = new AlphabetizerModule(vault);
         alphabetizer.sort();
         
         //create output module and ouput results
-        OutputModule output = new OutputModule(vault, alphabetizer.getNewIndexes());
+        //OutputModule output = new OutputModule(vault, alphabetizer.getNewIndexes());
+        OutputModule output = new OutputModule(vault);
         output.show();
         
     }//end indexingSystem

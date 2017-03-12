@@ -1,13 +1,27 @@
+package kwic;
 import java.util.ArrayList;
+import kwic.KWICControl;
 
 public class OutputModule extends Module{
+    
+    private static OutputModule instance;
 
-    public OutputModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
+    /*public OutputModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
         super(vault, previousIndexes);
+    }*/
+    
+    public OutputModule(IStorage vault) {
+        super(vault);
+        instance = OutputModule.this;
+        super.previousModIndexes = kwic.AlphabetizerModule.getInstance().getNewIndexes();
     }
+    
+    public static OutputModule getInstance(){return instance;}
 
     void show() {
         System.out.println("\nin OutputModule.show");
+        
+        String output = "";
         
         //output to screen for now
         //if the line wraps, change the \n to a space and change space to \n at the end
@@ -23,9 +37,12 @@ public class OutputModule extends Module{
                     //this is the end of the line
                     nextChar = "\n";
                 }
+                output += nextChar;
                 System.out.print(nextChar);
             }
         }
+        KWICControl control = KWICControl.getInstance();
+        control.outputArea.setText(control.outputArea.getText() + output);
     }//end show
     
     private int getPosition(LineIndex l, int index){

@@ -1,12 +1,21 @@
-
-import java.util.ArrayList;
+package kwic;
 import java.util.Comparator;
 
 public class AlphabetizerModule extends Module{
+    
+    private static AlphabetizerModule instance;
 
-    public AlphabetizerModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
+    /*public AlphabetizerModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
         super(vault, previousIndexes);
+    }*/
+    
+    public AlphabetizerModule(IStorage vault) {
+        super(vault);
+        instance = AlphabetizerModule.this;
+        super.previousModIndexes = kwic.RemoveNoiseWordModule.getInstance().getNewIndexes();
     }
+    
+    public static AlphabetizerModule getInstance(){return instance;}
     
     void sort() {
         System.out.println("\nAlphabetizerModule.sort");
@@ -24,11 +33,11 @@ public class AlphabetizerModule extends Module{
                 /* if this element is less, then it is the new minimum */
                 LineIndex current = previousModIndexes.get(i);
                 int result = lineSort.compare(min, current);
-                System.out.println("result: " + result);
+                //System.out.println("result: " + result);
                 if (result > 0  ) {                    
                     /* found new minimum; remember its index */
                     min = current;
-                    System.out.println("min: " + min.getLineBeginningIndex());
+                    //System.out.println("min: " + min.getLineBeginningIndex());
                 }
             }
             if(min != previousModIndexes.get(j)){

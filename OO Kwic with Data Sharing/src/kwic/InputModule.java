@@ -1,11 +1,21 @@
-
+package kwic;
 import java.util.ArrayList;
 
 public class InputModule extends Module{
+    
+    private static InputModule instance;
 
-    public InputModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
+    /*public InputModule(IStorage vault, ArrayList<LineIndex> previousIndexes) {
         super(vault, previousIndexes);
+        instance = InputModule.this;
+    }*/
+    
+    public InputModule(IStorage vault) {
+        super(vault);
+        instance = InputModule.this;
     }
+    
+    public static InputModule getInstance(){return instance;}
     
     public void setData(String text){
         System.out.println("\nin InputModule.setData");

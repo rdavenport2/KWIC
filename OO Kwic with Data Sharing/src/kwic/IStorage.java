@@ -1,3 +1,4 @@
+package kwic;
 public interface IStorage {
     
     public void setData(String data);
