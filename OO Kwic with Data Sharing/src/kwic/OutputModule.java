@@ -1,8 +1,7 @@
 package kwic;
-import java.util.ArrayList;
-import kwic.KWICControl;
 
 public class OutputModule extends Module{
+    
     public OutputModule(IStorage vault) {
         super(vault);
     }

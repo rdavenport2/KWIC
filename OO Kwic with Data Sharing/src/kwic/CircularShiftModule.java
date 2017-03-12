@@ -1,5 +1,4 @@
 package kwic;
-import java.util.ArrayList;
 
 public class CircularShiftModule extends Module{
     

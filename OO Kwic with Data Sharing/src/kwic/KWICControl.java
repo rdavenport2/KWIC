@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,10 +18,12 @@ public class KWICControl {
     JTextArea outputArea;
     private JTextArea inputArea;
     private final JButton startButton;
-    private static KWICControl control;
+    private static KWICControl instance;
     
     public KWICControl(){
-        control = KWICControl.this;
+        
+    instance = KWICControl.this;
+    
     JFrame frame = new JFrame("KWIC Indexing System");
         // Add a window listner for close button
         frame.addWindowListener(new WindowAdapter() {
@@ -73,14 +74,14 @@ public class KWICControl {
             long output = lEndTime - lStartTime;//in milliseconds
             outputArea.setText(outputArea.getText() + 
                     "\nElapsed time in milliseconds: " + output);
-}//end actionPerformed        
+        }//end actionPerformed        
     }//end listener
     
     public static void main(String[] args) {
         KWICControl app = new KWICControl();
     }//end main
     
-    public static KWICControl getInstance(){return control;}
+    public static KWICControl getInstance(){return instance;}
     
     private void indexingSystem(String text){
         
